@@ -41,11 +41,16 @@
       padding: 15px 50px; z-index: 1000;
     }
     nav h1 {color: #00ffcc; font-size: 1.5rem;}
+    .nav-right {
+      display: flex;
+      align-items: center;
+    }
     .menu-toggle {
       display: none;
       color: white;
       font-size: 2rem;
       cursor: pointer;
+      margin-left: 20px;
     }
     nav ul {display: flex; list-style: none;}
     nav ul li {margin: 0 15px;}
@@ -59,7 +64,7 @@
       color: white;
       font-size: 1.2rem;
       cursor: pointer;
-      margin-left: 15px;
+      margin-left: 20px;
     }
     
     /* Hero Section */
@@ -68,13 +73,39 @@
       display: flex; flex-direction: column; justify-content: center; align-items: center;
       text-align: center; position: relative; z-index: 1; padding: 0 20px;
     }
-    .hero h1 {font-size: 3rem; text-shadow: 2px 2px 8px black; border-right: 0.15em solid #00ffcc; white-space: nowrap; overflow: hidden;}
-    .hero span {color: #00ffcc;}
-    .hero p {margin: 15px 0; font-size: 1.2rem; text-shadow: 2px 2px 6px black;}
+    .hero h2 {
+      font-size: 3rem; text-shadow: 2px 2px 8px black;
+      border-right: 0.15em solid #00ffcc; white-space: nowrap; overflow: hidden;
+      max-width: 100%; margin-bottom: 20px;
+    }
+    .hero .roles {
+      font-size: 1.2rem; text-shadow: 2px 2px 6px black;
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;
+    }
+    .hero .roles span {
+      opacity: 0;
+      transform: scale(0.5);
+      display: inline-block;
+      animation: appear 1.5s forwards;
+    }
+    @keyframes appear {
+      0% {opacity: 0; transform: scale(0.5);}
+      100% {opacity: 1; transform: scale(1);}
+    }
+    .hero .roles span:nth-child(1) {animation-delay: 0.5s;}
+    .hero .roles span:nth-child(2) {animation-delay: 1s;}
+    .hero .roles span:nth-child(3) {animation-delay: 1.5s;}
+    .hero .roles span:nth-child(4) {animation-delay: 2s;}
+    /* Repeat animation */
+    .hero .roles {animation: fadeOut 8s infinite;}
+    @keyframes fadeOut {
+      0%, 40% {opacity: 1;}
+      60%, 100% {opacity: 0;}
+    }
     .btn {
       padding: 10px 20px; background: #00ffcc; color: black;
       text-decoration: none; border-radius: 5px; transition: 0.3s;
-      font-weight: bold;
+      font-weight: bold; margin-top: 30px;
     }
     .btn:hover {background: white; color: black;}
     
@@ -126,25 +157,26 @@
     
     /* Mobile Friendly Media Queries */
     @media (max-width: 768px) {
-      nav {padding: 15px 20px; flex-wrap: wrap;}
+      nav {padding: 15px 20px;}
       .menu-toggle {display: block;}
       nav ul {
         display: none;
         flex-direction: column;
         position: absolute;
         top: 60px;
-        left: 0;
-        width: 100%;
+        right: 0;
+        width: 200px;
         background: rgba(0,0,0,0.9);
+        padding: 20px;
+        border-radius: 0 0 0 10px;
       }
       nav ul.active {display: flex;}
-      nav ul li {margin: 10px 0; text-align: center;}
-      .hero h1 {font-size: 2rem;}
-      .hero p {font-size: 1rem;}
-      section {padding: 80px 10px; margin-top: 30px;}
+      nav ul li {margin: 15px 0; text-align: center;}
+      .hero h2 {font-size: 2rem; white-space: normal;}
+      .hero .roles {font-size: 1rem; gap: 10px;}
+      section {padding: 80px 15px; margin: 30px 10px;}
       h2 {font-size: 1.8rem;}
       li {font-size: 1rem;}
-      #dark-mode-toggle {margin-left: auto;}
     }
   </style>
 </head>
@@ -153,8 +185,11 @@
   
   <!-- Navbar -->
   <nav>
-    <h1>Ali Hassan </h1>
-    <div class="menu-toggle">☰</div>
+    <h1>Ali Hassan</h1>
+    <div class="nav-right">
+      <button id="dark-mode-toggle">🌙</button>
+      <div class="menu-toggle">☰</div>
+    </div>
     <ul>
       <li><a href="#home">Home</a></li>
       <li><a href="#about">About</a></li>
@@ -162,13 +197,20 @@
       <li><a href="#education">Education</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <button id="dark-mode-toggle">🌙</button>
   </nav>
   
   <!-- Hero -->
   <header class="hero" id="home">
-    <h1 id="typing-text"></h1>
-    <p>Pro Hacker | Typist | Freelancer | Trader</p>
+    <h2 id="typing-text"></h2>
+    <div class="roles">
+      <span>Pro Hacker</span>
+      <span>|</span>
+      <span>Typist</span>
+      <span>|</span>
+      <span>Freelancer</span>
+      <span>|</span>
+      <span>Trader</span>
+    </div>
     <a href="#contact" class="btn">Hire Me</a>
   </header>
   
@@ -220,18 +262,18 @@
   <div id="back-to-top">↑</div>
   
   <script>
-    // Preload Images
+    // Preload Images - New 10 Hacker with Laptop Images
     const images = [
-      'https://www.shutterstock.com/image-vector/girl-hacker-hoodie-using-laptop-260nw-2434664869.jpg',
-      'https://thumbs.dreamstime.com/b/cyber-attack-hacker-using-computer-code-interface-digita-cyber-attack-hacker-using-computer-code-interface-digital-103315565.jpg',
-      'https://img.freepik.com/premium-photo/cyber-security-data-protection-concept-with-digital-hacking-sign-faceless-hacker-hoodie-using-laptop-dark-wall-background_670147-14224.jpg',
-      'https://www.shutterstock.com/image-photo/side-view-young-hacker-laptop-260nw-1530311588.jpg',
-      'https://thumbs.dreamstime.com/b/abstract-polygonal-hacker-laptop-technology-dark-background-cyber-attack-cyber-security-concepts-computer-hacking-414146701.jpg',
-      'https://thumbs.dreamstime.com/b/hacker-laptop-cyber-security-interface-unrecognizable-hacker-hoodie-laptop-committing-cyber-crime-over-blurry-blue-173354356.jpg',
-      'https://www.shutterstock.com/image-illustration/hacker-using-laptop-steal-identity-260nw-567632461.jpg',
-      'https://thumbs.dreamstime.com/b/hacker-laptop-cyber-security-unrecognizable-standing-over-gray-background-blurry-maze-circuit-interface-concept-data-165954482.jpg',
-      'https://media.istockphoto.com/id/1485137610/vector/hacker-using-computer-on-an-abstract-hacking-detected-security-breach-background.jpg?s=612x612&w=0&k=20&c=08X-tIb228Q-l0kV17ja6SqTVLh55hgiVUwnJ9hvptc=',
-      'https://static.vecteezy.com/system/resources/thumbnails/072/503/883/small/hooded-hacker-at-laptop-cyber-security-data-breach-digital-crime-concept-in-dark-red-light-photo.jpg'
+      'https://media.istockphoto.com/id/2221118435/photo/young-man-in-hoodie-working-on-laptop-in-dark-tech-environment.jpg?s=612x612&w=0&k=20&c=Q3qNFxqRm7dDWlBwPldwb60zukoUi0o6Dl8zcFJioCQ=',
+      'https://thumbs.dreamstime.com/b/mysterious-hacker-hoodie-working-laptop-mysterious-hacker-hoodie-working-laptop-anonymous-hacker-dark-hoodie-389337439.jpg',
+      'https://www.shutterstock.com/image-photo/focused-hacker-dark-room-wearing-260nw-2559103869.jpg',
+      'https://thumbs.dreamstime.com/b/man-black-hoodie-intently-using-laptop-neon-lit-room-his-face-hidden-shadow-evoking-themes-cybersecurity-hacking-388247196.jpg',
+      'https://thumbs.dreamstime.com/b/portrait-computer-hacker-white-mask-hoodie-obscured-dark-face-data-thief-internet-fraud-darknet-cyber-security-141530993.jpg',
+      'https://www.shutterstock.com/image-photo/portrait-anonymous-man-hacker-wearing-260nw-2325823087.jpg',
+      'https://static.vecteezy.com/system/resources/thumbnails/022/793/840/small/a-hacker-in-a-hoodie-using-a-laptop-computer-isolated-on-dark-background-with-neon-light-ai-generated-photo.jpg',
+      'https://dce.harvard.edu/wp-content/uploads/sites/8/2025/05/Ethical-hacking.jpg',
+      'https://fsa2-assets.imgix.net/assets/Hero-Images/How-to-Become-an-Ethical-Hacker_Fullstack-Academy.avif?auto=compress%2Cformat&crop=focalpoint&domain=fsa2-assets.imgix.net&fit=crop&fp-x=0.5&fp-y=0.5&h=660&ixlib=php-3.3.1&w=992',
+      'https://img.freepik.com/premium-photo/singleminded-professional-programmer-obsessively-writing-code-his-desktop-computer-late-night-it-specialist-ethical-hacker-working-computer-finding-software-vulnerabilities_861143-3201.jpg'
     ];
     images.forEach(src => {
       const img = new Image();
@@ -247,7 +289,7 @@
         slideshow.style.backgroundImage = `url(${images[currentIndex]})`;
         slideshow.classList.remove('fade');
         currentIndex = (currentIndex + 1) % images.length;
-      }, 1000); // Match transition time
+      }, 1000);
     }
     changeBackground();
     setInterval(changeBackground, 5000);
@@ -271,15 +313,15 @@
         typingText.textContent = currentText.substring(0, charIndex++);
         if (charIndex > currentText.length) {
           isDeleting = true;
-          setTimeout(type, 2000); // Pause before delete
+          setTimeout(type, 2000);
           return;
         }
       } else {
         typingText.textContent = currentText.substring(0, charIndex--);
-        if (charIndex < texts[1].length) { // Stop deleting at shorter text length
+        if (charIndex < texts[1].length) {
           isDeleting = false;
           textIndex = (textIndex + 1) % texts.length;
-          setTimeout(type, 1000); // Pause before next type
+          setTimeout(type, 1000);
           return;
         }
       }
