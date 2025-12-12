@@ -96,6 +96,9 @@
     .hero .roles span:nth-child(2) {animation-delay: 1s;}
     .hero .roles span:nth-child(3) {animation-delay: 1.5s;}
     .hero .roles span:nth-child(4) {animation-delay: 2s;}
+    .hero .roles span:nth-child(5) {animation-delay: 2.5s;}
+    .hero .roles span:nth-child(6) {animation-delay: 3s;}
+    .hero .roles span:nth-child(7) {animation-delay: 3.5s;}
     /* Repeat animation */
     .hero .roles {animation: fadeOut 8s infinite;}
     @keyframes fadeOut {
@@ -135,6 +138,7 @@
       font-weight: bold;
     }
     form button:hover {background: white; color: black;}
+    #result {margin-top: 20px; font-weight: bold;}
     
     /* Footer */
     footer {
@@ -245,11 +249,13 @@
   <!-- Contact -->
   <section id="contact">
     <h2>Contact Me</h2>
-    <form id="contact-form">
-      <input type="text" id="name" placeholder="Your Name" required>
-      <input type="email" id="email" placeholder="Your Email" required>
-      <textarea id="message" placeholder="Your Message"></textarea>
+    <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value="c3e68215-c31b-4e9d-9aec-b1e878bf931d"> <!-- YAHAN APNI ACCESS KEY DAALO -->
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <textarea name="message" placeholder="Your Message" required></textarea>
       <button type="submit">Send</button>
+      <div id="result"></div>
     </form>
   </section>
   
@@ -262,7 +268,7 @@
   <div id="back-to-top">↑</div>
   
   <script>
-    // Preload Images - New 10 Hacker with Laptop Images
+    // Preload Images (same as before)
     const images = [
       'https://media.istockphoto.com/id/2221118435/photo/young-man-in-hoodie-working-on-laptop-in-dark-tech-environment.jpg?s=612x612&w=0&k=20&c=Q3qNFxqRm7dDWlBwPldwb60zukoUi0o6Dl8zcFJioCQ=',
       'https://thumbs.dreamstime.com/b/mysterious-hacker-hoodie-working-laptop-mysterious-hacker-hoodie-working-laptop-anonymous-hacker-dark-hoodie-389337439.jpg',
@@ -329,26 +335,31 @@
     }
     type();
     
-    // Contact Form Validation & Submit
+    // Form Submit with Success Message
     const form = document.getElementById('contact-form');
-    form.addEventListener('submit', (e) => {
+    const result = document.getElementById('result');
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const message = document.getElementById('message').value.trim();
-      if (name === '' || email === '' || message === '') {
-        alert('Please fill all fields!');
-        return;
-      }
-      if (!/\S+@\S+\.\S+/.test(email)) {
-        alert('Please enter a valid email!');
-        return;
-      }
-      alert('Your message has been sent!');
-      form.reset();
+      const formData = new FormData(form);
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          result.innerHTML = '<span style="color:#00ffcc;">Message sent successfully! 🚀</span>';
+          form.reset();
+        } else {
+          result.innerHTML = '<span style="color:red;">Error: ' + data.message + '</span>';
+        }
+      })
+      .catch(error => {
+        result.innerHTML = '<span style="color:red;">Something went wrong!</span>';
+      });
     });
     
-    // Section Animations
+    // Section Animations, Back to Top, Dark Mode (same as before)
     const sections = document.querySelectorAll('section');
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -359,7 +370,6 @@
     });
     sections.forEach(section => observer.observe(section));
     
-    // Back to Top Button
     const backToTop = document.getElementById('back-to-top');
     window.addEventListener('scroll', () => {
       backToTop.style.display = window.scrollY > 300 ? 'block' : 'none';
@@ -368,7 +378,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
     
-    // Dark Mode Toggle
     const toggleButton = document.getElementById('dark-mode-toggle');
     toggleButton.addEventListener('click', () => {
       document.body.classList.toggle('light-mode');
